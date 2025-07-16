@@ -7,7 +7,6 @@ import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-na
 import polyline from '@mapbox/polyline';
 import { getSocket, emitEvent, listenToEvent } from '../../utils/socket';
 import * as Location from 'expo-location';
-import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
