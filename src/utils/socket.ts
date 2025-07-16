@@ -114,6 +114,17 @@ export const connectSocket = (userId: string = "user123", userType: string = "cu
       onRideAcceptedCallback?.(data);
     });
 
+    socket.on("ride_response", (data) => {
+      console.log("✅ Ride response received:", data);
+      console.log("🔍 Ride response data structure:", JSON.stringify(data, null, 2));
+      if (data.response === 'accept') {
+        console.log("✅ Calling onRideAcceptedCallback with data:", data);
+        onRideAcceptedCallback?.(data);
+      } else {
+        console.log("❌ Ride response is not 'accept', it's:", data.response);
+      }
+    });
+
     socket.on("driver_location_update", (data) => {
       console.log("📍 Driver location update:", data);
       onDriverLocationCallback?.(data);
@@ -191,9 +202,19 @@ export const listenToEvent = (eventName: string, callback: (data: any) => void) 
 };
 
 // Ride booking specific functions
+// Update the bookRide function type signature
+type PickupDropLocation = {
+  latitude: number;
+  longitude: number;
+  address: string;
+  name: string;
+  id?: string;
+  type?: string;
+};
+
 export const bookRide = (rideData: {
-  pickup: string;
-  drop: string;
+  pickup: PickupDropLocation;
+  drop: PickupDropLocation;
   rideType: string;
   price: number;
   userId: string;

@@ -94,49 +94,56 @@ export default function RideOptionsScreen({ navigation, route }: any) {
   const handleBook = () => {
     // Get the selected ride option details
     const selectedRide = rideOptions.find(o => o.id === selected);
-    const success = emitEvent('book_ride', {
-      pickup,
-      drop,
+
+    // Send full pickup and drop objects
+    const rideRequest = {
+      pickup: {
+        latitude: pickup.latitude,
+        longitude: pickup.longitude,
+        address: pickup.address || 'Current Location',
+        name: pickup.name || pickup.address || 'Pickup Location',
+      },
+      drop: {
+        id: drop.id || '1',
+        name: drop.name || drop.address || 'Drop Location',
+        address: drop.address || drop.name || 'Drop Location',
+        latitude: drop.latitude,
+        longitude: drop.longitude,
+        type: drop.type || 'recent',
+      },
       rideType: selectedRide?.label,
       price: selectedRide?.price,
       userId: 'user123', // Replace with real user ID if available
-    });
-    
+    };
+
+    console.log('🚗 Booking ride with data:', rideRequest);
+    const success = emitEvent('book_ride', rideRequest);
+
     if (!success) {
       Alert.alert('Connection Error', 'Unable to connect to server. Please try again.');
+    } else {
+      console.log('✅ Ride booking request sent successfully');
     }
   };
 
   useEffect(() => {
     const onRideBooked = (data: any) => {
+      console.log('✅ Ride booked response received:', data);
       if (data.success) {
+        console.log('🎉 Ride booked successfully, navigating to FindingDriver');
         // Navigate to FindingDriver or show confirmation
-    navigation.navigate('FindingDriver', { 
-      destination: {
-        name: drop.address,
-        latitude: drop.latitude,
-        longitude: drop.longitude
-      },
-      pickup: {
-        name: pickup.address,
-        latitude: pickup.latitude,
-        longitude: pickup.longitude
-      },
-      estimate: {
+
             fare: data.price,
             distance: '2.5 km',
             duration: '8 mins',
             eta: '5 mins',
-      },
+          },
           paymentMethod: 'Cash',
           driver: null,
           rideId: data.rideId,
-          forWhom: route?.params?.forWhom || 'me',
-          friendName: route?.params?.friendName || '',
-          friendPhone: route?.params?.friendPhone || '',
-    });
+
       } else {
-        Alert.alert('Booking Failed', 'Unable to book ride.');
+        Alert.alert('Booking Failed', data.message || 'Unable to book ride.');
       }
     };
     
