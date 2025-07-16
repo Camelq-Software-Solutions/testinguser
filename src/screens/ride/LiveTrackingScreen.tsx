@@ -93,11 +93,11 @@ export default function LiveTrackingScreen({ navigation, route }: any) {
   const getStatusText = () => {
     switch (rideStatus) {
       case 'arriving':
-        return `${driverInfo.name || 'Driver'} is arriving in ${currentETA} mins`;
+        return `${driverInfo.name || 'Driver'} is arriving in ${currentETA} `;
       case 'picked_up':
         return 'Ride started - Heading to destination';
       case 'in_progress':
-        return `${currentETA} mins to destination`;
+        return `${currentETA}  to destination`;
       default:
         return 'Tracking your ride...';
     }
@@ -121,7 +121,7 @@ export default function LiveTrackingScreen({ navigation, route }: any) {
       await Share.share({
         message: 'Check out my trip details! [Add trip info or link here]',
       });
-    } catch (error) {
+    } catch (error: any) {
       alert('Error sharing: ' + (error?.message || error?.toString() || 'Unknown error'));
     }
   };
@@ -204,7 +204,7 @@ export default function LiveTrackingScreen({ navigation, route }: any) {
             </Text>
           </View>
           <View style={styles.etaContainer}>
-            <Text style={styles.etaText}>{currentETA} min</Text>
+            <Text style={styles.etaText}>{currentETA} </Text>
             <Text style={styles.etaLabel}>ETA</Text>
           </View>
         </View>

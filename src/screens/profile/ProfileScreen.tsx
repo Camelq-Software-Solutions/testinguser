@@ -202,25 +202,25 @@ export default function ProfileScreen({ navigation, route }: any) {
               <View style={styles.actionIcon}>
                 <Ionicons name="time" size={24} color={Colors.primary} />
               </View>
-              <Text style={styles.actionText}>{`Schedule\nRide`}</Text>
+              <Text style={styles.actionText}>Schedule Ride</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButtonGrid} onPress={() => navigation.navigate('History')}>
               <View style={styles.actionIcon}>
                 <Ionicons name="receipt" size={24} color={Colors.accent} />
               </View>
-              <Text style={styles.actionText}>{`Ride\nHistory`}</Text>
+              <Text style={styles.actionText}>Ride History</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButtonGrid} onPress={() => navigation.getParent()?.navigate('Offers')}>
               <View style={styles.actionIcon}>
                 <Ionicons name="gift" size={24} color={Colors.coral} />
               </View>
-              <Text style={styles.actionText}>{`View\nOffers`}</Text>
+              <Text style={styles.actionText}>View Offers</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButtonGrid} onPress={() => navigation.navigate('HelpSupport')}>
               <View style={styles.actionIcon}>
                 <Ionicons name="help-circle" size={24} color={Colors.info} />
               </View>
-              <Text style={styles.actionText}>{`Get\nSupport`}</Text>
+              <Text style={styles.actionText}>Get Support</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -283,15 +283,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileCard: {
-    backgroundColor: Colors.gray100, // light grey card
-    margin: Layout.spacing.lg,
-    borderRadius: Layout.borderRadius.lg,
-    padding: Layout.spacing.lg,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    backgroundColor: '#fff',
+    width: '85%',
+    alignSelf: 'center',
+    borderRadius: 24,
+    paddingVertical: Layout.spacing.md,
+    paddingHorizontal: Layout.spacing.lg,
+    borderWidth: 1,
+    borderColor: Colors.gray200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 6,
+    marginTop: Layout.spacing.lg,
+    marginBottom: Layout.spacing.md,
   },
   profileInfo: {
     flexDirection: 'row',
@@ -364,16 +370,20 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.borderLight,
   },
   quickActions: {
-    backgroundColor: Colors.gray100, // match card
-    marginHorizontal: Layout.spacing.lg,
-    marginBottom: Layout.spacing.lg,
-    borderRadius: Layout.borderRadius.lg,
-    padding: Layout.spacing.lg,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    backgroundColor: '#fff',
+    width: '85%',
+    alignSelf: 'center',
+    marginBottom: Layout.spacing.md,
+    borderRadius: 24,
+    paddingVertical: Layout.spacing.md,
+    paddingHorizontal: Layout.spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.gray200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 6,
   },
   sectionTitle: {
     fontSize: Layout.fontSize.lg,
@@ -383,13 +393,16 @@ const styles = StyleSheet.create({
   },
   actionGridRow: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginBottom: 12,
   },
   actionButtonGrid: {
-    flex: 1,
+    width: '48%',
+    aspectRatio: 1,
     alignItems: 'center',
-    marginHorizontal: 6,
+    justifyContent: 'center',
+    marginBottom: 12,
   },
   actionIcon: {
     width: 48,
@@ -404,17 +417,23 @@ const styles = StyleSheet.create({
     fontSize: Layout.fontSize.sm,
     fontWeight: '600',
     color: Colors.text,
+    textAlign: 'center',
+    flexWrap: 'nowrap',
   },
   menuContainer: {
-    backgroundColor: Colors.gray100, // match card
-    marginHorizontal: Layout.spacing.lg,
+    backgroundColor: '#fff',
+    width: '85%',
+    alignSelf: 'center',
     marginBottom: Layout.spacing.lg,
-    borderRadius: Layout.borderRadius.lg,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    borderRadius: 24,
+    paddingVertical: Layout.spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.gray200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 6,
   },
   menuItem: {
     flexDirection: 'row',

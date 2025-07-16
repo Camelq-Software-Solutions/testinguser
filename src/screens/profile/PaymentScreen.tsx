@@ -118,7 +118,7 @@ export default function PaymentScreen({ navigation }: any) {
                 )}
               </View>
             ))}
-            <TouchableOpacity style={styles.addBtn}>
+            <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate('AddPaymentMethod')}>
               <Ionicons name="add" size={20} color="#fff" />
               <Text style={styles.addBtnText}>Add New Payment Method</Text>
             </TouchableOpacity>

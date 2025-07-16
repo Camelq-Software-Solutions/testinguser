@@ -263,9 +263,7 @@ export default function DropPinLocationScreen({ navigation }: any) {
         <View style={styles.addressCard}>
           <View style={styles.addressRow}>
             <Text style={styles.addressLabel}>Select your location</Text>
-            <TouchableOpacity>
-              <Text style={styles.changeText}>Change</Text>
-            </TouchableOpacity>
+          
           </View>
           <View style={styles.selectedAddressBox}>
             <View style={styles.iconCircle}>
@@ -492,7 +490,7 @@ const styles = StyleSheet.create({
   },
   selectDropButton: {
     width: '90%',
-    backgroundColor: '#FFD600',
+    backgroundColor: 'green',
     borderRadius: 16,
     paddingVertical: 16,
     alignItems: 'center',
@@ -503,7 +501,7 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   selectDropButtonText: {
-    color: '#222',
+    color: '#fff',
     fontWeight: '700',
     fontSize: 16,
     letterSpacing: 0.1,
