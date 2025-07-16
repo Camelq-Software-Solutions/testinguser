@@ -118,6 +118,11 @@ export default function RideOptionsScreen({ navigation, route }: any) {
         latitude: drop.latitude,
         longitude: drop.longitude
       },
+      pickup: {
+        name: pickup.address,
+        latitude: pickup.latitude,
+        longitude: pickup.longitude
+      },
       estimate: {
             fare: data.price,
             distance: '2.5 km',
@@ -127,6 +132,9 @@ export default function RideOptionsScreen({ navigation, route }: any) {
           paymentMethod: 'Cash',
           driver: null,
           rideId: data.rideId,
+          forWhom: route?.params?.forWhom || 'me',
+          friendName: route?.params?.friendName || '',
+          friendPhone: route?.params?.friendPhone || '',
     });
       } else {
         Alert.alert('Booking Failed', 'Unable to book ride.');
@@ -135,7 +143,7 @@ export default function RideOptionsScreen({ navigation, route }: any) {
     
     const unsubscribe = listenToEvent('ride_booked', onRideBooked);
     return unsubscribe;
-  }, [drop, navigation]);
+  }, [drop, pickup, navigation, route?.params]);
 
   // Fit map to route on mount
   useEffect(() => {
@@ -149,15 +157,19 @@ export default function RideOptionsScreen({ navigation, route }: any) {
     }
   }, [pickup, drop]);
 
-  // Fetch route directions from current location to drop
+  // Fetch route directions from pickup location to drop
   useEffect(() => {
     const fetchRouteDirections = async () => {
-      if (!location || !drop) {
+      if (!pickup || !drop) {
         setRouteCoords([]);
         return;
       }
+      console.log('Calculating route from pickup:', pickup.address, 'to drop:', drop.address);
+      console.log('Pickup coordinates:', pickup.latitude, pickup.longitude);
+      console.log('Drop coordinates:', drop.latitude, drop.longitude);
+      
       const apiKey = 'AIzaSyDHN3SH_ODlqnHcU9Blvv2pLpnDNkg03lU'; // <-- Replace with your actual API key
-      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude},${location.longitude}&destination=${drop.latitude},${drop.longitude}&key=${apiKey}`;
+      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${pickup.latitude},${pickup.longitude}&destination=${drop.latitude},${drop.longitude}&key=${apiKey}`;
       try {
         const response = await fetch(url);
         const json = await response.json();
@@ -165,15 +177,18 @@ export default function RideOptionsScreen({ navigation, route }: any) {
           const points = polyline.decode(json.routes[0].overview_polyline.points);
           const coords = points.map((point: [number, number]) => ({ latitude: point[0], longitude: point[1] }));
           setRouteCoords(coords);
+          console.log('Route calculated successfully with', coords.length, 'points');
         } else {
           setRouteCoords([]);
+          console.log('No routes found in API response');
         }
       } catch (error) {
         setRouteCoords([]);
+        console.log('Error calculating route:', error);
       }
     };
     fetchRouteDirections();
-  }, [location, drop]);
+  }, [pickup, drop]);
 
   // Dynamically update current location marker as user moves
   useEffect(() => {
@@ -214,8 +229,17 @@ export default function RideOptionsScreen({ navigation, route }: any) {
   }, []);
 
   useEffect(() => {
-    if (route?.params?.pickup) setPickup(route.params.pickup);
-    if (route?.params?.drop) setDrop(route.params.drop);
+    if (route?.params?.pickup) {
+      console.log('Setting pickup location:', route.params.pickup);
+      setPickup(route.params.pickup);
+    }
+    if (route?.params?.drop) {
+      console.log('Setting drop location:', route.params.drop);
+      setDrop(route.params.drop);
+    }
+    if (route?.params?.forWhom) {
+      console.log('Ride is for:', route.params.forWhom, route.params.friendName);
+    }
   }, [route?.params]);
 
   console.log('rideOptions:', rideOptions);
@@ -236,21 +260,24 @@ export default function RideOptionsScreen({ navigation, route }: any) {
           }}
           showsUserLocation
         >
-          {/* Render the route from current location (blue dot) to destination (red pin) */}
-          {location && drop && routeCoords.length > 0 && (
+          {/* Render the route from pickup location to destination (red pin) */}
+          {pickup && drop && routeCoords.length > 0 && (
             <Polyline
               coordinates={routeCoords}
               strokeColor="#222"
-              strokeWidth={4}
+              strokeWidth={2}
             />
           )}
-          {/* Pickup Marker */}
-          {/* Removed pickup marker as requested */}
-          {/* Drop Marker */}
-          {/* Drop Marker (red pin) - only if set */}
+          {/* Pickup Marker (blue pin) - shows selected pickup location */}
+          {pickup && (
+            <Marker coordinate={pickup} pinColor="green">
+              <Ionicons name="location-sharp" size={36} color="#007bff" />
+            </Marker>
+          )}
+          {/* Drop Marker (red pin) - only if set */} 
           {drop && (
             <Marker coordinate={drop} pinColor="red">
-              <Ionicons name="location" size={32} color="#ef4444" />
+              <Ionicons name="flag" size={36} color="#ef4444" />
             </Marker>
           )}
           {/* Animated Vehicle Markers */}
@@ -266,7 +293,7 @@ export default function RideOptionsScreen({ navigation, route }: any) {
           ))}
           {/* Current Location Marker (green pin) - updates dynamically */}
           {location && (
-            <Marker coordinate={location} pinColor="green">
+            <Marker coordinate={location} pinColor="blue">
               <Ionicons name="location" size={32} color="#22c55e" />
             </Marker>
           )}

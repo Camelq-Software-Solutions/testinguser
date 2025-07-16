@@ -13,6 +13,7 @@ import { Colors } from '../../constants/Colors';
 import { Layout } from '../../constants/Layout';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { connectSocketWithJWT, onRideAccepted, onRideStatus, clearCallbacks } from '../../utils/socket';
+import { Video, ResizeMode } from 'expo-av';
 
 export default function FindingDriverScreen({ navigation, route }: any) {
   const { destination, estimate, paymentMethod, driver, rideId } = route.params;
@@ -119,10 +120,14 @@ export default function FindingDriverScreen({ navigation, route }: any) {
       <View style={styles.content}>
         {/* Map Container */}
         <View style={styles.mapContainer}>
-          <View style={styles.mapPlaceholder}>
-            <Ionicons name="map" size={48} color={Colors.gray400} />
-            <Text style={styles.mapText}>Searching for drivers nearby</Text>
-          </View>
+          <Video
+            source={require('../../../assets/images/animationvideo.mp4')}
+            style={{ width: '90%', height: '120%' }}
+            resizeMode={ResizeMode.COVER}
+            shouldPlay
+            isLooping
+            isMuted
+          />
         </View>
 
         {/* Search Status */}
